@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual Viday · Paula · Fisioyoga Málaga</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --navy:#0d1f2d;--sea:#1d6fa4;--sky:#4ab3d8;--gold:#c8a96e;
+    --cream:#f8f5f0;--light:#eef4f8;--text:#1a2d3d;--muted:#5a7a8e;--border:#d4e3ec;
+    --green:#2a7a5a;--green-bg:#eaf4ef;--red:#8b2e2e;--red-bg:#faeeee;
+    --amber:#7a5a10;--amber-bg:#fdf8ee;--amber-border:#e8d5a8;
+  }
+  body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);line-height:1.7;font-weight:300;font-size:15px}
+  .page{max-width:800px;margin:0 auto;padding:48px 36px 72px}
+  .header{background:var(--navy);border-radius:12px;padding:32px 36px;margin-bottom:12px;position:relative;overflow:hidden}
+  .header::after{content:'';position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:rgba(74,179,216,0.07)}
+  .header-top{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+  .logo-mark{width:38px;height:38px;background:rgba(200,169,110,0.15);border:1px solid rgba(200,169,110,0.5);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;color:var(--gold);flex-shrink:0}
+  .header-brand{font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.4)}
+  .header h1{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:400;color:white;line-height:1.1;margin-bottom:6px}
+  .header-sub{font-size:13px;color:rgba(255,255,255,0.4)}
+  .header-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+  .pill{padding:4px 12px;border-radius:100px;font-size:11px;font-weight:500;letter-spacing:0.06em}
+  .pill-gold{background:rgba(200,169,110,0.15);border:1px solid rgba(200,169,110,0.35);color:var(--gold)}
+  .pill-blue{background:rgba(74,179,216,0.1);border:1px solid rgba(74,179,216,0.25);color:var(--sky)}
+  .divisor{height:1px;background:var(--border);margin:8px 0 36px}
+  .aviso{background:var(--amber-bg);border:1px solid var(--amber-border);border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:14px 20px;margin-bottom:28px;font-size:13.5px;color:#5a4010;line-height:1.6}
+  .aviso strong{font-weight:600}
+  .indice{background:white;border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin-bottom:36px}
+  .indice-title{font-size:10px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--sea);margin-bottom:14px}
+  .indice-list{list-style:none;display:flex;flex-direction:column;gap:6px}
+  .indice-list li{display:flex;align-items:center;gap:12px;font-size:13.5px;color:var(--text)}
+  .indice-num{width:22px;height:22px;background:var(--light);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--sea);flex-shrink:0}
+  .section{margin-bottom:40px}
+  .section-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid var(--navy)}
+  .step-badge{width:32px;height:32px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--gold);font-family:'Cormorant Garamond',serif;flex-shrink:0}
+  .section-title{font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:600;color:var(--navy);flex:1}
+  .section-tag{font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+  p{margin-bottom:14px;font-size:14.5px}
+  p:last-child{margin-bottom:0}
+  .steps{display:flex;flex-direction:column;gap:8px}
+  .step{display:flex;gap:14px;align-items:flex-start;background:white;border:1px solid var(--border);border-radius:8px;padding:14px 16px}
+  .step.highlight{border-color:var(--sky);border-left:3px solid var(--sea)}
+  .step-num{width:24px;height:24px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--gold);flex-shrink:0;margin-top:1px}
+  .step-content{flex:1}
+  .step-content strong{font-weight:500;color:var(--navy);display:block;margin-bottom:3px;font-size:14px}
+  .step-content span{font-size:13px;color:var(--muted);line-height:1.55}
+  .nota{display:inline-block;margin-top:6px;font-size:12px;color:var(--sea);background:var(--light);padding:3px 10px;border-radius:100px;font-weight:500}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .card{background:white;border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+  .card .c-label{font-size:10px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--sea);margin-bottom:6px}
+  .card .c-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--navy);margin-bottom:5px}
+  .card .c-desc{font-size:13px;color:var(--muted);line-height:1.55}
+  .sino-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .sino-box{border-radius:8px;padding:16px 18px}
+  .sino-box.si{background:var(--green-bg);border:1px solid #b8deca}
+  .sino-box.no{background:var(--red-bg);border:1px solid #e8bebe}
+  .sino-label{font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;margin-bottom:10px}
+  .sino-box.si .sino-label{color:var(--green)}
+  .sino-box.no .sino-label{color:var(--red)}
+  .sino-list{list-style:none;display:flex;flex-direction:column;gap:7px}
+  .sino-list li{font-size:13px;line-height:1.45;display:flex;gap:8px;align-items:flex-start}
+  .sino-box.si .sino-list li{color:#1a4a35}
+  .sino-box.no .sino-list li{color:#5a1e1e}
+  .sino-list li::before{content:'';width:14px;height:14px;border-radius:50%;flex-shrink:0;margin-top:1px}
+  .sino-box.si .sino-list li::before{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Ccircle cx='7' cy='7' r='7' fill='%232a7a5a'/%3E%3Cpath d='M4 7l2 2 4-4' stroke='white' stroke-width='1.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat}
+  .sino-box.no .sino-list li::before{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Ccircle cx='7' cy='7' r='7' fill='%238b2e2e'/%3E%3Cpath d='M5 5l4 4M9 5l-4 4' stroke='white' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E") center/contain no-repeat}
+  .checklist{background:white;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+  .checklist-header{background:var(--navy);padding:11px 18px;font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold)}
+  .checklist-item{display:flex;align-items:flex-start;gap:12px;padding:11px 18px;border-bottom:1px solid var(--border);font-size:13.5px;line-height:1.5}
+  .checklist-item:last-child{border-bottom:none}
+  .check-box{width:17px;height:17px;border:1.5px solid var(--border);border-radius:4px;flex-shrink:0;margin-top:2px}
+  .item-text{flex:1;color:var(--text)}
+  .item-note{font-size:12px;color:var(--muted);margin-top:2px;display:block}
+  .escala-box{background:var(--amber-bg);border:1px solid var(--amber-border);border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:16px 20px}
+  .escala-title{font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
+  .escala-list{list-style:none;display:flex;flex-direction:column;gap:6px}
+  .escala-list li{font-size:13.5px;color:#5a4010;padding-left:16px;position:relative;line-height:1.5}
+  .escala-list li::before{content:'→';position:absolute;left:0;color:var(--gold);font-size:12px}
+  .app-block{background:var(--navy);border-radius:10px;padding:24px 28px;margin-bottom:12px}
+  .app-block .app-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:white;margin-bottom:6px}
+  .app-block .app-sub{font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:18px}
+  .app-steps-dark{display:flex;flex-direction:column;gap:8px}
+  .app-step-dark{display:flex;gap:12px;align-items:flex-start;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:7px;padding:12px 14px}
+  .app-num{width:22px;height:22px;background:rgba(200,169,110,0.2);border:1px solid rgba(200,169,110,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--gold);flex-shrink:0;margin-top:1px}
+  .app-step-dark strong{font-weight:500;color:white;display:block;margin-bottom:2px;font-size:13.5px}
+  .app-step-dark span{font-size:12.5px;color:rgba(255,255,255,0.5);line-height:1.5}
+  .footer{margin-top:52px;padding-top:20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--muted);letter-spacing:0.04em}
+  @media(max-width:580px){.page{padding:32px 20px 52px}.grid2,.sino-grid{grid-template-columns:1fr}.header h1{font-size:27px}}
+  @media print{body{background:white}.header,.checklist-header,.app-block{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-top">
+      <div class="logo-mark">FY</div>
+      <span class="header-brand">Fisioyoga Málaga · Documento interno</span>
+    </div>
+    <h1>Manual de gestión de pacientes · Viday</h1>
+    <div class="header-sub">Paula · Alumna en prácticas · Abril 2025</div>
+    <div class="header-pills">
+      <span class="pill pill-gold">Nutrición · Fisioterapia</span>
+      <span class="pill pill-blue">Registro · Agenda · Citas · App del paciente</span>
+    </div>
+  </div>
+
+  <div class="divisor"></div>
+
+  <div class="aviso">
+    <strong>Viday es tu plataforma de trabajo.</strong><br>
+    Todo lo que gestionarás durante las prácticas pasa por <strong>Viday</strong>: registro de pacientes, agenda, citas, comunicación y app del paciente. Existe otra plataforma llamada <strong>Qclinic</strong>, que se usa exclusivamente para facturación — esa parte no la tocarás durante las prácticas y no necesitas entrar en ella.
+  </div>
+
+  <div class="indice">
+    <div class="indice-title">Contenido de este manual</div>
+    <ul class="indice-list">
+      <li><span class="indice-num">1</span>Qué es Viday y cómo está organizado</li>
+      <li><span class="indice-num">2</span>Registro de un paciente nuevo</li>
+      <li><span class="indice-num">3</span>Gestión de citas: crear, modificar y cancelar</li>
+      <li><span class="indice-num">4</span>La app del paciente: cómo explicársela y acompañar la descarga</li>
+      <li><span class="indice-num">5</span>Confirmación diaria de citas · protocolo</li>
+      <li><span class="indice-num">6</span>Qué puedes hacer sola y cuándo avisas</li>
+    </ul>
+  </div>
+
+  <!-- 1 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="step-badge">1</div>
+      <h2 class="section-title">Qué es Viday y cómo está organizado</h2>
+      <span class="section-tag">Contexto</span>
+    </div>
+    <p>Viday es el sistema central de gestión de pacientes de la clínica. Todo lo que tenga que ver con un paciente de nutrición o fisioterapia pasa por aquí: su ficha, sus citas, su historial y su comunicación con el centro. El objetivo es que <strong>nada quede fuera del sistema</strong>: si no está en Viday, no existe para la clínica. La facturación se gestiona en otra plataforma (Qclinic), pero esa parte no forma parte de tus prácticas.</p>
+    <div class="grid2">
+      <div class="card">
+        <div class="c-label">Agenda por profesional</div>
+        <div class="c-title">Rafa · Águeda · Carmen</div>
+        <div class="c-desc">Cada profesional tiene su propia agenda en Viday. Rafa (nutrición, todos los días) · Águeda (fisioterapia y Fisioyoga) · Carmen (fisioterapia y Fisioyoga, solo martes y jueves).</div>
+      </div>
+      <div class="card">
+        <div class="c-label">Fichas de paciente</div>
+        <div class="c-title">Datos + historial</div>
+        <div class="c-desc">Cada paciente tiene una ficha con sus datos personales, el servicio activo y el historial de citas. Es el punto de referencia antes de cualquier contacto.</div>
+      </div>
+      <div class="card">
+        <div class="c-label">Comunicación</div>
+        <div class="c-title">Mailings y mensajes</div>
+        <div class="c-desc">Viday permite enviar comunicaciones a pacientes. Esta función la gestiona Rafa o Águeda directamente, salvo que se indique lo contrario.</div>
+      </div>
+      <div class="card">
+        <div class="c-label">App del paciente</div>
+        <div class="c-title">Acceso desde el móvil</div>
+        <div class="c-desc">Los pacientes pueden ver sus citas y comunicarse con el centro desde una app. Tú serás quien les explique cómo descargársela y activarla.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="step-badge">2</div>
+      <h2 class="section-title">Registro de un paciente nuevo</h2>
+      <span class="section-tag">Primer contacto</span>
+    </div>
+    <p>Cuando llega un paciente nuevo —por teléfono, WhatsApp, Instagram o en persona— el primer paso siempre es crearlo en Viday antes de darle cita. Sin ficha no hay cita.</p>
+    <div class="steps">
+      <div class="step highlight">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Verifica que no existe ya en el sistema</strong>
+          <span>Busca por nombre, apellido o teléfono antes de crear nada. Si ya tiene ficha, trabajar desde la existente. No duplicar nunca.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Crea la ficha del paciente</strong>
+          <span>Datos obligatorios: nombre completo · teléfono móvil · correo electrónico · servicio por el que viene (nutrición con Rafa / fisioterapia con Águeda o Carmen).</span>
+          <span class="nota">Sin correo no puede activar la app. Si no tiene, anótalo y avisa a Rafa.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Asigna el servicio y el profesional</strong>
+          <span>Nutrición → Rafa · Fisioterapia o Fisioyoga → Águeda o Carmen según disponibilidad. Carmen solo está martes y jueves — si el paciente pide otro día, no puede ser con ella.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <strong>Crea la primera cita</strong>
+          <span>Una vez guardada la ficha, ve a la agenda del profesional y crea la cita con fecha, hora y tipo de servicio. Ver bloque 3 para el proceso completo.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <strong>Envía la invitación a la app</strong>
+          <span>Desde la ficha del paciente, envía la invitación por correo para que active su cuenta. Hazlo en el momento del registro. Ver bloque 4 para cómo explicárselo.</span>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="aviso">
+      <strong>Datos mínimos sin excepción:</strong> nombre completo · teléfono móvil · correo electrónico · servicio asignado. Si falta alguno, no se completa el registro hasta tenerlo o hasta que Rafa diga cómo proceder.
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="step-badge">3</div>
+      <h2 class="section-title">Gestión de citas</h2>
+      <span class="section-tag">Agenda</span>
+    </div>
+    <p>Las citas se crean, modifican y cancelan siempre desde Viday. Si no está en el sistema, el profesional no lo ve y el paciente no recibe recordatorio.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Crear una cita nueva</strong>
+          <span>Entra en la agenda del profesional correspondiente. Selecciona la franja disponible. Vincula la cita a la ficha del paciente. Elige el tipo de servicio (primera consulta · revisión · sesión de fisioterapia). Guarda.</span>
+        </div>
+      </div>
+      <div class="step highlight">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Verifica disponibilidad antes de confirmar al paciente</strong>
+          <span>Nunca des una hora sin haberla comprobado primero en la agenda del profesional correspondiente. Recuerda: Carmen solo tiene agenda martes y jueves — si piden fisioterapia otro día, toca mirar la agenda de Águeda.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Modificar una cita existente</strong>
+          <span>Entra en la cita desde la agenda o desde la ficha del paciente. Cambia la fecha u hora y guarda. Confirma el cambio al paciente por WhatsApp igualmente — no asumas que le llegó la notificación automática.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <strong>Cancelar una cita</strong>
+          <span>Marca la cita como cancelada en el sistema. No la borres sin más. Anota el motivo si el paciente lo indica. Avisa inmediatamente a Rafa o Águeda.</span>
+          <span class="nota">Una cancelación = un hueco que puede llenarse. Avisa siempre antes de salir.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <strong>Estados de una cita y cómo usarlos</strong>
+          <span>Pendiente de confirmar · Confirmada · Cancelada · Realizada. Mantén el estado actualizado en tiempo real. Es como Rafa, Águeda y Carmen saben qué está pasando sin tener que preguntar.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="step-badge">4</div>
+      <h2 class="section-title">La app del paciente</h2>
+      <span class="section-tag">Descarga y activación</span>
+    </div>
+    <p>Viday tiene una app para pacientes desde la que pueden ver sus citas, recibir recordatorios y comunicarse con el centro. Tu función es explicársela a cada paciente nuevo y acompañar el proceso si lo necesitan. Es parte de la experiencia que queremos dar desde el primer momento.</p>
+    <div class="app-block">
+      <div class="app-title">Cómo explicarle la app al paciente · Guion</div>
+      <div class="app-sub">Díselo de forma natural, no como si estuvieras leyendo un manual.</div>
+      <div class="app-steps-dark">
+        <div class="app-step-dark">
+          <div class="app-num">1</div>
+          <div>
+            <strong>Explica para qué sirve</strong>
+            <span>«Desde la app puedes ver tus citas, recibir el recordatorio el día antes y escribirnos si necesitas algo. Es más cómodo que estar pendiente del teléfono.»</span>
+          </div>
+        </div>
+        <div class="app-step-dark">
+          <div class="app-num">2</div>
+          <div>
+            <strong>Envía la invitación desde Viday</strong>
+            <span>Desde la ficha del paciente hay una opción para enviarle la invitación por correo. Hazlo en el momento del registro, no lo dejes para después.</span>
+          </div>
+        </div>
+        <div class="app-step-dark">
+          <div class="app-num">3</div>
+          <div>
+            <strong>Dile que revise su correo</strong>
+            <span>«Te llegará un correo de Viday para activar tu cuenta. Entra, crea tu contraseña y descarga la app. Si tienes algún problema, escríbenos y lo resolvemos.»</span>
+          </div>
+        </div>
+        <div class="app-step-dark">
+          <div class="app-num">4</div>
+          <div>
+            <strong>Si quiere descargársela en el momento</strong>
+            <span>Se llama Viday. Disponible en App Store (iPhone) y Google Play (Android). Busca, descarga e inicia sesión con el correo que nos ha dado. Si no le ha llegado aún la invitación, que espere unos minutos.</span>
+          </div>
+        </div>
+        <div class="app-step-dark">
+          <div class="app-num">5</div>
+          <div>
+            <strong>Si tiene problemas técnicos</strong>
+            <span>Anótalo y avisa a Rafa. No improvises soluciones. La gestión de incidencias técnicas de la app no corresponde a las prácticas.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="step-badge">5</div>
+      <h2 class="section-title">Confirmación diaria de citas</h2>
+      <span class="section-tag">Cada día · 13:00–14:00</span>
+    </div>
+    <p>Cada día, antes de salir, revisas la agenda del día siguiente y envías confirmación por WhatsApp a cada paciente con cita. Siempre con la plantilla exacta del documento de plantillas, sin modificar el tono ni añadir texto propio.</p>
+    <div class="checklist">
+      <div class="checklist-header">Checklist diario · 13:00–14:00</div>
+      <div class="checklist-item">
+        <div class="check-box"></div>
+        <div class="item-text">Abrir Viday y revisar la agenda del día siguiente
+          <span class="item-note">Comprobar si hay citas nuevas o cambios de última hora</span>
+        </div>
+      </div>
+      <div class="checklist-item">
+        <div class="check-box"></div>
+        <div class="item-text">Anotar para cada cita: nombre, hora, profesional y tipo de servicio
+          <span class="item-note">Primera consulta nutrición · revisión nutrición · fisioterapia · presencial u online</span>
+        </div>
+      </div>
+      <div class="checklist-item">
+        <div class="check-box"></div>
+        <div class="item-text">Enviar WhatsApp de confirmación con la plantilla correspondiente
+          <span class="item-note">Cambiar solo los campos entre corchetes: [nombre] [día] [hora]. Nada más.</span>
+        </div>
+      </div>
+      <div class="checklist-item">
+        <div class="check-box"></div>
+        <div class="item-text">Actualizar el estado de cada cita en Viday según la respuesta
+          <span class="item-note">Confirmada / Sin respuesta (no pasa nada) / Cancelada → avisar a Rafa o Águeda</span>
+        </div>
+      </div>
+      <div class="checklist-item">
+        <div class="check-box"></div>
+        <div class="item-text">Si hay cancelación o cambio, avisar antes de salir
+          <span class="item-note">No dejes una cancelación sin comunicar. Un hueco sin cubrir es tiempo perdido.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="step-badge">6</div>
+      <h2 class="section-title">Qué puedes hacer sola y cuándo avisas</h2>
+      <span class="section-tag">Límites del rol</span>
+    </div>
+    <div class="sino-grid" style="margin-bottom:16px">
+      <div class="sino-box si">
+        <div class="sino-label">✓ Lo gestionas tú</div>
+        <ul class="sino-list">
+          <li>Registrar un paciente nuevo con sus datos</li>
+          <li>Crear y asignar citas en la agenda</li>
+          <li>Modificar fecha u hora de una cita existente</li>
+          <li>Enviar la invitación a la app al paciente</li>
+          <li>Explicar cómo funciona y cómo descargarse la app</li>
+          <li>Confirmar citas por WhatsApp con plantilla</li>
+          <li>Actualizar estados de cita en el sistema</li>
+          <li>Buscar y consultar fichas de pacientes</li>
+        </ul>
+      </div>
+      <div class="sino-box no">
+        <div class="sino-label">✗ Avisas antes de tocar</div>
+        <ul class="sino-list">
+          <li>Modificar la configuración de agendas o profesionales</li>
+          <li>Borrar fichas o eliminar citas del sistema</li>
+          <li>Acceder a historiales o notas clínicas</li>
+          <li>Enviar mailings o comunicaciones masivas</li>
+          <li>Responder preguntas clínicas del paciente</li>
+          <li>Cambiar tarifas o tipos de servicio</li>
+          <li>Tocar la configuración de la cuenta de Viday</li>
+        </ul>
+      </div>
+    </div>
+    <div class="escala-box">
+      <div class="escala-title">Avisa siempre en estas situaciones</div>
+      <ul class="escala-list">
+        <li>Un paciente pregunta algo sobre su tratamiento, pauta o evolución</li>
+        <li>Un paciente nuevo llega sin cita y no sabes cómo clasificarlo</li>
+        <li>Hay algo en la agenda que no entiendes o parece un error</li>
+        <li>Un paciente tiene problemas técnicos con la app</li>
+        <li>Una cancelación que puede necesitar reposición urgente</li>
+        <li>Cualquier situación no cubierta en este manual</li>
+      </ul>
+    </div>
+    <br>
+    <p style="font-size:13.5px;color:var(--muted)">La regla de los 10 segundos: si tienes que pensar más de 10 segundos si algo es tuyo o no, <strong style="color:var(--navy);font-weight:500">no es tuyo</strong>. Para, avisa y listo. Nadie se va a molestar por preguntar.</p>
+  </div>
+
+  <div class="footer">
+    <span>Fisioyoga Málaga · Manual interno · Alumna en prácticas · Abril 2025</span>
+    <span>Viday · Nutrición y Fisioterapia</span>
+  </div>
+
+</div>
+</body>
+</html>
