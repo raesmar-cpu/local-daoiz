@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auditoría SEO · Dr. Francisco Zamorano</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f172a;color:#e2e8f0;line-height:1.6;padding:32px 16px}
+  .container{max-width:1200px;margin:0 auto}
+  header{background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);border:1px solid #334155;border-radius:16px;padding:32px;margin-bottom:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px}
+  .brand h1{font-size:26px;font-weight:700;color:#f1f5f9;margin-bottom:4px}
+  .brand p{color:#94a3b8;font-size:13.5px}
+  .brand a{color:#60a5fa;text-decoration:none}
+  .brand .tag{display:inline-block;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);color:#f59e0b;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:.5px;margin-top:8px;text-transform:uppercase}
+  .score-box{display:flex;align-items:center;gap:24px}
+  .score-circle{width:140px;height:140px;border-radius:50%;background:conic-gradient(#f59e0b 0deg 277deg,#334155 277deg 360deg);display:flex;align-items:center;justify-content:center;position:relative}
+  .score-circle::before{content:'';position:absolute;inset:10px;background:#0f172a;border-radius:50%}
+  .score-value{position:relative;z-index:1;font-size:42px;font-weight:800;color:#f1f5f9}
+  .score-label{position:relative;z-index:1;font-size:11px;color:#94a3b8;letter-spacing:1px;text-transform:uppercase;margin-top:-4px}
+  .score-wrap{text-align:center;display:flex;flex-direction:column;align-items:center}
+  .grade{margin-top:8px;font-size:13px;color:#f59e0b;font-weight:600}
+  nav.toc{background:#1e293b;border:1px solid #334155;border-radius:10px;padding:14px 18px;margin-bottom:20px;display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px}
+  nav.toc a{color:#94a3b8;text-decoration:none;padding:4px 10px;border-radius:6px;transition:all .15s}
+  nav.toc a:hover{background:#334155;color:#f1f5f9}
+  .summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:24px}
+  .stat{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:18px;text-align:center}
+  .stat .num{font-size:32px;font-weight:800;color:#f1f5f9;line-height:1.1}
+  .stat .lab{font-size:12px;color:#94a3b8;margin-top:6px;text-transform:uppercase;letter-spacing:.5px}
+  .stat.crit .num{color:#ef4444}
+  .stat.warn .num{color:#f59e0b}
+  .stat.ok .num{color:#22c55e}
+  h2{font-size:20px;color:#f1f5f9;margin:32px 0 16px;display:flex;align-items:center;gap:10px;scroll-margin-top:20px}
+  h2::before{content:'';width:4px;height:22px;background:#3b82f6;border-radius:2px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+  .card{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:20px;transition:transform .2s,border-color .2s}
+  .card:hover{transform:translateY(-2px);border-color:#475569}
+  .card-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+  .card-title{font-size:15px;font-weight:600;color:#f1f5f9}
+  .card-score{font-size:22px;font-weight:800}
+  .bar{height:6px;background:#334155;border-radius:3px;overflow:hidden;margin-bottom:12px}
+  .bar>div{height:100%;border-radius:3px;transition:width .6s}
+  .card p{font-size:13px;color:#cbd5e1}
+  .card ul{list-style:none;margin-top:8px;font-size:12.5px;color:#94a3b8}
+  .card li{padding:4px 0;padding-left:18px;position:relative}
+  .card li::before{content:'·';position:absolute;left:6px;color:#64748b;font-weight:700}
+  .good{color:#22c55e!important}.good::before{color:#22c55e!important;content:'✓'!important}
+  .warn{color:#f59e0b!important}.warn::before{color:#f59e0b!important;content:'!'!important}
+  .bad{color:#ef4444!important}.bad::before{color:#ef4444!important;content:'×'!important}
+  .s-ok{color:#22c55e}.s-mid{color:#f59e0b}.s-low{color:#ef4444}
+  .b-ok{background:#22c55e}.b-mid{background:#f59e0b}.b-low{background:#ef4444}
+  .fixes{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:24px;margin-top:16px}
+  .fix{display:flex;gap:16px;padding:18px 0;border-bottom:1px solid #334155}
+  .fix:last-child{border-bottom:none}
+  .priority{flex-shrink:0;width:70px;height:70px;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700}
+  .p-high{background:rgba(239,68,68,.15);color:#ef4444;border:1px solid rgba(239,68,68,.3)}
+  .p-med{background:rgba(245,158,11,.15);color:#f59e0b;border:1px solid rgba(245,158,11,.3)}
+  .p-low{background:rgba(34,197,94,.15);color:#22c55e;border:1px solid rgba(34,197,94,.3)}
+  .priority small{font-size:9px;letter-spacing:1px;text-transform:uppercase;opacity:.8;margin-top:2px}
+  .priority strong{font-size:13px}
+  .fix-body{flex:1;min-width:0}
+  .fix-body h3{font-size:16px;color:#f1f5f9;margin-bottom:6px}
+  .fix-body p{font-size:13.5px;color:#cbd5e1;margin-bottom:6px}
+  .fix-body .why{font-size:12.5px;color:#94a3b8;margin-bottom:8px;font-style:italic}
+  .fix-body code{background:#0f172a;border:1px solid #334155;border-radius:4px;padding:2px 6px;font-size:12px;color:#fbbf24;display:inline-block;max-width:100%;overflow-x:auto}
+  .fix-body pre{background:#0f172a;border:1px solid #334155;border-radius:6px;padding:12px;font-size:11.5px;color:#fbbf24;overflow-x:auto;margin-top:8px;white-space:pre-wrap;word-break:break-word}
+  .data-table{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:20px;margin-bottom:16px}
+  .data-row{display:flex;padding:9px 0;border-bottom:1px solid #293548;font-size:13.5px;flex-wrap:wrap;gap:8px}
+  .data-row:last-child{border-bottom:none}
+  .data-row .k{width:230px;color:#94a3b8;flex-shrink:0}
+  .data-row .v{color:#e2e8f0;font-weight:500;flex:1;min-width:200px;word-break:break-word}
+  .data-row .v .ok{color:#22c55e}
+  .data-row .v .ko{color:#ef4444}
+  .data-row .v .wn{color:#f59e0b}
+  details{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:0;margin-bottom:14px}
+  details summary{padding:16px 20px;cursor:pointer;font-weight:600;color:#f1f5f9;font-size:15px;list-style:none;display:flex;justify-content:space-between;align-items:center}
+  details summary::after{content:'▾';color:#64748b;font-size:14px;transition:transform .2s}
+  details[open] summary::after{transform:rotate(180deg)}
+  details summary::-webkit-details-marker{display:none}
+  details .body{padding:0 20px 20px}
+  .gbp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:8px}
+  .gbp{background:#0f172a;border:1px solid #334155;border-radius:10px;padding:16px}
+  .gbp h4{color:#60a5fa;font-size:13px;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+  .gbp p{font-size:13px;color:#cbd5e1;margin-bottom:6px}
+  .gbp ul{list-style:none;font-size:12.5px;color:#94a3b8}
+  .gbp li{padding:3px 0;padding-left:16px;position:relative}
+  .gbp li::before{content:'›';position:absolute;left:4px;color:#64748b;font-weight:700}
+  .badge{display:inline-block;font-size:10.5px;padding:2px 8px;border-radius:10px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;margin-left:6px}
+  .b-good{background:rgba(34,197,94,.15);color:#22c55e;border:1px solid rgba(34,197,94,.3)}
+  .b-warn{background:rgba(245,158,11,.15);color:#f59e0b;border:1px solid rgba(245,158,11,.3)}
+  .b-bad{background:rgba(239,68,68,.15);color:#ef4444;border:1px solid rgba(239,68,68,.3)}
+  .b-info{background:rgba(96,165,250,.15);color:#60a5fa;border:1px solid rgba(96,165,250,.3)}
+  footer{text-align:center;padding:32px 16px;color:#64748b;font-size:12px;border-top:1px solid #334155;margin-top:32px}
+  @media(max-width:640px){.score-circle{width:110px;height:110px}.score-value{font-size:32px}.score-box{flex-direction:column}.data-row .k{width:100%}}
+  @media print{body{background:#fff;color:#000;padding:0}.card,header,details,.fixes,.data-table,.stat,nav.toc{background:#fff;border:1px solid #ddd;color:#000;page-break-inside:avoid}.score-value,.brand h1,.fix-body h3,.card-title,h2{color:#000}.score-circle::before{background:#fff}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="brand">
+    <h1>Auditoría SEO</h1>
+    <p><a href="https://doctorzamorano.com/" target="_blank">doctorzamorano.com</a> · Dr. Francisco Zamorano · Cirujano Oculoplástico</p>
+    <p style="margin-top:4px;font-size:12px;color:#64748b">Auditoría realizada el 25 de abril de 2026 · Web + Ficha Google Business</p>
+    <span class="tag">Nivel: Mejorable</span>
+  </div>
+  <div class="score-box">
+    <div class="score-wrap">
+      <div class="score-circle">
+        <span class="score-value">77</span>
+        <span class="score-label">/100</span>
+      </div>
+      <div class="grade">Buena base, con margen claro</div>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <a href="#resumen">Resumen</a>
+  <a href="#prioridades">Top 5 prioridades</a>
+  <a href="#categorias">Categorías</a>
+  <a href="#gbp">Google Business</a>
+  <a href="#tecnico">Detalle técnico</a>
+  <a href="#paginas">Páginas internas</a>
+</nav>
+
+<section id="resumen" class="summary">
+  <div class="stat ok"><div class="num">23</div><div class="lab">Tests aprobados</div></div>
+  <div class="stat warn"><div class="num">11</div><div class="lab">Advertencias</div></div>
+  <div class="stat crit"><div class="num">5</div><div class="lab">Problemas críticos</div></div>
+  <div class="stat"><div class="num">19</div><div class="lab">URLs en sitemap</div></div>
+</section>
+
+<h2 id="prioridades">🎯 Top 5 correcciones prioritarias</h2>
+<div class="fixes">
+
+  <div class="fix">
+    <div class="priority p-high"><strong>#1</strong><small>Crítica</small></div>
+    <div class="fix-body">
+      <h3>Implementar schema <code>Physician</code> + <code>MedicalClinic</code></h3>
+      <p>El schema actual usa solo <code>Organization+Person</code> y <code>AboutPage</code>. Para un centro médico esto deja fuera campos clave que Google usa para mostrar resultados ricos en búsquedas sanitarias (hora de apertura, ubicaciones, especialidades, valoraciones).</p>
+      <p class="why">Por qué importa: el sector salud tiene reglas específicas de E-E-A-T en Google. Sin schema <code>Physician</code> o <code>MedicalBusiness</code> el conocimiento de Google sobre la entidad es incompleto y reduce la posibilidad de aparecer en cajas destacadas, panel de conocimiento y mapas locales.</p>
+      <pre>&lt;script type="application/ld+json"&gt;
+{
+  "@context":"https://schema.org",
+  "@type":"Physician",
+  "name":"Dr. Francisco Zamorano Martín",
+  "medicalSpecialty":["Ophthalmologic","CosmeticSurgery"],
+  "url":"https://doctorzamorano.com/",
+  "image":"https://doctorzamorano.com/wp-content/uploads/2025/08/francisco-zamorano.jpg",
+  "telephone":"+34 952 06 05 23",
+  "priceRange":"€€",
+  "address":{
+    "@type":"PostalAddress",
+    "streetAddress":"Alameda de Colón 26",
+    "addressLocality":"Málaga",
+    "postalCode":"29001",
+    "addressCountry":"ES"
+  },
+  "areaServed":["Málaga","Marbella","Fuengirola","Granada"],
+  "availableService":[
+    {"@type":"MedicalProcedure","name":"Blefaroplastia"},
+    {"@type":"MedicalProcedure","name":"Ptosis palpebral"},
+    {"@type":"MedicalProcedure","name":"Lagrimeo ocular"},
+    {"@type":"MedicalProcedure","name":"Oculoplastia"}
+  ],
+  "aggregateRating":{
+    "@type":"AggregateRating",
+    "ratingValue":"5.0",
+    "reviewCount":"28"
+  }
+}
+&lt;/script&gt;</pre>
+    </div>
+  </div>
+
+  <div class="fix">
+    <div class="priority p-high"><strong>#2</strong><small>Crítica</small></div>
+    <div class="fix-body">
+      <h3>Cambiar schema "Article" en páginas de servicios por <code>MedicalProcedure</code></h3>
+      <p>La página <code>/blefaroplastia-malaga/</code> declara su contenido como <code>Article</code>. No es un artículo: es la ficha del servicio quirúrgico. Lo mismo debería revisarse en <code>/ptosis-palpebral-malaga/</code>, <code>/lagrimeo-ocular-malaga/</code> y <code>/oculoplastia-malaga/</code>.</p>
+      <p class="why">Por qué importa: marcar una página de servicio como Article confunde a Google sobre la intención de la URL. Para procedimientos médicos, <code>MedicalProcedure</code> habilita campos como <code>preparation</code>, <code>followup</code>, <code>howPerformed</code>, que mejoran el rich result.</p>
+      <p><strong>Acción:</strong> en Rank Math, cambiar el "Schema type" de la página de Article a Service o MedicalProcedure. Añadir descripción del procedimiento, indicaciones y posoperatorio.</p>
+    </div>
+  </div>
+
+  <div class="fix">
+    <div class="priority p-high"><strong>#3</strong><small>Crítica</small></div>
+    <div class="fix-body">
+      <h3>Añadir <code>&lt;h1&gt;</code> a la página /contacto/</h3>
+      <p>La home y las páginas de servicio tienen un <code>h1</code> correcto, pero la página de Contacto no devuelve ningún <code>h1</code> en el HTML servido. Es uno de los señales más básicos para Google y para accesibilidad.</p>
+      <p class="why">Por qué importa: una página sin h1 pierde claridad de tema. En contacto puede impactar en el posicionamiento de "pedir cita oftalmólogo Málaga" o "contacto Dr. Zamorano".</p>
+      <p><strong>Acción:</strong> en Elementor, marcar el título principal como H1 (por ejemplo: <em>"Pide cita con el Dr. Francisco Zamorano"</em>).</p>
+    </div>
+  </div>
+
+  <div class="fix">
+    <div class="priority p-med"><strong>#4</strong><small>Alta</small></div>
+    <div class="fix-body">
+      <h3>Corregir alts de imágenes y <code>og:image:alt</code></h3>
+      <p>Encontradas <strong>3 imágenes sin atributo alt</strong> de un total de 14, y la etiqueta <code>og:image:alt</code> dice literalmente <code>"HOME"</code>, lo cual no aporta contexto a buscadores ni a herramientas de accesibilidad cuando la imagen se comparte en redes.</p>
+      <p class="why">Por qué importa: los alts son un factor de ranking en Google Imágenes y mejoran la accesibilidad (WCAG). En sector salud, una buena descripción ("Dr. Francisco Zamorano, oftalmólogo y cirujano oculoplástico en Málaga") refuerza la entidad.</p>
+      <p><strong>Acción:</strong> revisar las imágenes desde la biblioteca de medios de WordPress y rellenar el campo "Texto alternativo". Cambiar el alt de la imagen OG por una descripción real de quien aparece.</p>
+    </div>
+  </div>
+
+  <div class="fix">
+    <div class="priority p-med"><strong>#5</strong><small>Alta</small></div>
+    <div class="fix-body">
+      <h3>Optimizar velocidad: home en 1,32 s y página del doctor en 2,14 s</h3>
+      <p>Tiempos medidos en TTFB (sin renderizado). La home tarda 1,32 s y <code>/dr-francisco-zamorano/</code> casi 2,15 s. El resto de páginas de servicio están en torno a 0,75 s, lo que sugiere que esas dos cargan recursos extra.</p>
+      <p class="why">Por qué importa: Google usa Core Web Vitals como factor de ranking. En móvil, un TTFB &gt; 1 s perjudica LCP y reduce conversiones (cada 100 ms importa en sanidad privada).</p>
+      <p><strong>Acción concreta:</strong> activar caché de página completa en WP Rocket (ya está instalado), reducir tamaño de la imagen principal (<code>francisco-zamorano.jpg</code> está sirviéndose como JPEG; pasar a WebP/AVIF). Añadir <code>preload</code> al hero. Revisar plugins activos y desactivar los que no aporten.</p>
+    </div>
+  </div>
+
+</div>
+
+<h2 id="categorias">📊 Desglose por categoría</h2>
+<div class="grid">
+
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title">Meta Tags</div>
+      <div class="card-score s-ok">88</div>
+    </div>
+    <div class="bar"><div class="b-ok" style="width:88%"></div></div>
+    <p>Cobertura completa de etiquetas básicas, hreflang y canonical correctos.</p>
+    <ul>
+      <li class="good"><strong>Title</strong> 54 caracteres, con keyword</li>
+      <li class="good"><strong>Description</strong> presente, idioma y región OK</li>
+      <li class="good">Canonical, viewport, robots index/follow</li>
+      <li class="good">Hreflang es / en / x-default correctos</li>
+      <li class="warn">Description un poco corta (~140 chars)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title">Headings</div>
+      <div class="card-score s-mid">75</div>
+    </div>
+    <div class="bar"><div class="b-mid" style="width:75%"></div></div>
+    <p>Jerarquía limpia salvo en /contacto/, sin h1 detectable.</p>
+    <ul>
+      <li class="good">1 único H1 en home con la keyword principal</li>
+      <li class="good">H2 descriptivos y temáticos</li>
+      <li class="good">H3 con cada especialización</li>
+      <li class="bad">/contacto/ sin H1 visible</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title">Imágenes</div>
+      <div class="card-score s-mid">70</div>
+    </div>
+    <div class="bar"><div class="b-mid" style="width:70%"></div></div>
+    <p>11 de 14 imágenes con alt. og:image:alt sin valor real.</p>
+    <ul>
+      <li class="good">11/14 imágenes con atributo alt</li>
+      <li class="warn">3 imágenes sin alt</li>
+      <li class="bad">og:image:alt = "HOME"</li>
+      <li class="warn">Imagen OG en JPEG 590×590 (ideal 1200×630 WebP)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title">Enlaces</div>
+      <div class="card-score s-ok">80</div>
+    </div>
+    <div class="bar"><div class="b-ok" style="width:80%"></div></div>
+    <p>Estructura clara, redes sociales completas, sin enlaces rotos detectados (200 OK en todas las páginas testadas).</p>
+    <ul>
+      <li class="good">Todas las páginas testadas devuelven 200</li>
+      <li class="good">Redes sociales bien enlazadas (FB, IG, LinkedIn, Doctoralia)</li>
+      <li class="good">4 enlaces a Google Maps de las clínicas</li>
+      <li class="warn">Pocos enlaces internos cruzados entre servicios</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title">Open Graph y Social</div>
+      <div class="card-score s-ok">90</div>
+    </div>
+    <div class="bar"><div class="b-ok" style="width:90%"></div></div>
+    <p>Cobertura excelente, solo a pulir detalles.</p>
+    <ul>
+      <li class="good">og:title, description, image, url, type, locale</li>
+      <li class="good">og:image:width / height declaradas</li>
+      <li class="good">Twitter Card summary_large_image</li>
+      <li class="warn">og:image 590×590 (recomendado 1200×630)</li>
+      <li class="warn">og:image:alt = "HOME"</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title">Schema / Datos estructurados</div>
+      <div class="card-score s-low">55</div>
+    </div>
+    <div class="bar"><div class="b-low" style="width:55%"></div></div>
+    <p>JSON-LD presente pero con tipos incorrectos para sector médico.</p>
+    <ul>
+      <li class="good">Schema Organization+Person, WebSite y AboutPage</li>
+      <li class="good">JSON-LD bien formado</li>
+      <li class="bad">Sin schema Physician / MedicalBusiness</li>
+      <li class="bad">Página de servicio marcada como Article</li>
+      <li class="bad">Sin AggregateRating (5★/28 op. en Doctoralia sin aprovechar)</li>
+      <li class="warn">Sin BreadcrumbList ni FAQPage</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title">Técnico</div>
+      <div class="card-score s-mid">75</div>
+    </div>
+    <div class="bar"><div class="b-mid" style="width:75%"></div></div>
+    <p>Configuración base correcta, pero TTFB y headers de seguridad mejorables.</p>
+    <ul>
+      <li class="good">HTTPS activo, redirección HTTP → HTTPS</li>
+      <li class="good">Redirección www → no-www correcta</li>
+      <li class="good">robots.txt y sitemap_index.xml válidos</li>
+      <li class="good">Favicon servido vía link rel="icon"</li>
+      <li class="warn">TTFB home 1,32 s</li>
+      <li class="warn">/dr-francisco-zamorano/ tarda 2,14 s</li>
+      <li class="bad">Sin header Strict-Transport-Security (HSTS)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title">Contenido</div>
+      <div class="card-score s-mid">70</div>
+    </div>
+    <div class="bar"><div class="b-mid" style="width:70%"></div></div>
+    <p>Textos únicos por página, pero sin profundidad ni blog activo.</p>
+    <ul>
+      <li class="good">Title y description únicos en cada URL</li>
+      <li class="good">Bilingüe ES/EN (WPML)</li>
+      <li class="warn">Sitemap solo cubre páginas, sin posts</li>
+      <li class="warn">Sin sección de blog ni FAQ</li>
+      <li class="warn">Sin testimonios estructurados ni casos antes/después de cara a SEO</li>
+    </ul>
+  </div>
+
+</div>
+
+<h2 id="gbp">📍 Auditoría de la ficha Google Business</h2>
+<div class="data-table">
+  <p style="font-size:13.5px;color:#cbd5e1;margin-bottom:14px">El enlace compartido apunta a la ficha <strong>Dr. Francisco Zamorano - Oftalmólogo y Cirujano Oculoplástico</strong> (kgmid <code>/g/11vr5wc8k7</code>). Google bloqueó el acceso automatizado al perfil completo, por lo que parte del análisis se basa en lo que la web declara y en el cruce con Doctoralia.</p>
+
+<div class="gbp-grid">
+  <div class="gbp">
+    <h4>✅ Lo que está hecho</h4>
+    <ul>
+      <li>Ficha indexada y con share link funcional</li>
+      <li>Coherencia con la web (mismo nombre profesional)</li>
+      <li>4 ubicaciones referenciadas: Málaga, Fuengirola, Marbella, Granada</li>
+      <li>Categoría visible: Oftalmólogo / Cirujano oculoplástico</li>
+      <li>Cruce con Doctoralia: 5★ con 28 opiniones (señal positiva)</li>
+    </ul>
+  </div>
+  <div class="gbp">
+    <h4>⚠️ Áreas a verificar</h4>
+    <ul>
+      <li>NAP consistente: el teléfono que aparece en el schema (952 06 05 23) debe coincidir con el de cada ficha de cada clínica</li>
+      <li>Una ficha por consultorio: si comparte espacios alquilados con otros médicos, la categoría primaria y la dirección de cada ficha deben ser exactas</li>
+      <li>Descripción de 750 caracteres optimizada con keywords ("oculoplastia Málaga", "blefaroplastia láser CO2")</li>
+      <li>Servicios listados en cada ficha (Blefaroplastia, Ptosis, Vía lagrimal, Oculoplastia, Consulta oftalmología)</li>
+      <li>Atributos: idioma de atención, accesibilidad, parking, citas online</li>
+    </ul>
+  </div>
+  <div class="gbp">
+    <h4>🚀 Acciones recomendadas</h4>
+    <ul>
+      <li>Subir 1-2 fotos de calidad cada semana (consulta, equipo, antes/después con consentimiento)</li>
+      <li>Activar Mensajes y citas desde la ficha</li>
+      <li>Publicar Posts cada 2 semanas (novedades, FAQ, casos)</li>
+      <li>Q&amp;A: precargar 5-10 preguntas reales y responderlas desde la cuenta del negocio</li>
+      <li>Pedir reseñas a pacientes con plantilla y enlace directo (g.page/r/...)</li>
+      <li>Responder TODAS las reseñas (las negativas con tono profesional, sin datos clínicos)</li>
+      <li>Vincular cada ficha con su página de la web mediante URL UTM (utm_source=gbp)</li>
+    </ul>
+  </div>
+  <div class="gbp">
+    <h4>🔗 Coherencia web ↔ ficha</h4>
+    <ul>
+      <li>Añadir schema <code>Physician</code> en la web con campo <code>sameAs</code> apuntando a la ficha de Google y a Doctoralia</li>
+      <li>Incluir <code>aggregateRating</code> 5.0 / 28 (Doctoralia) en la web</li>
+      <li>Crear página individual por clínica (4 landings con su <code>LocalBusiness</code>) si se quieren posicionar consultas locales tipo "oftalmólogo Marbella"</li>
+      <li>Cada landing debería enlazar a su ficha GBP correspondiente y embed Maps</li>
+    </ul>
+  </div>
+</div>
+</div>
+
+<h2 id="tecnico">🔍 Detalle técnico completo</h2>
+
+<details open>
+  <summary>Meta tags y configuración base</summary>
+  <div class="body">
+    <div class="data-row"><div class="k">Title</div><div class="v">Dr. Francisco Zamorano | Cirujano Oculoplástico en Málaga <span class="badge b-good">54 chars</span></div></div>
+    <div class="data-row"><div class="k">Meta description</div><div class="v">Oculoplastia en Málaga realizada por Dr. Francisco Zamorano, oftalmólogo y cirujano oculoplástico. Elige experiencia y profesionalidad. <span class="badge b-warn">~140 chars</span></div></div>
+    <div class="data-row"><div class="k">Viewport</div><div class="v">width=device-width, initial-scale=1 <span class="badge b-good">OK</span></div></div>
+    <div class="data-row"><div class="k">Robots</div><div class="v">follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large <span class="badge b-good">OK</span></div></div>
+    <div class="data-row"><div class="k">Canonical</div><div class="v">https://doctorzamorano.com/ <span class="badge b-good">OK</span></div></div>
+    <div class="data-row"><div class="k">HTML lang</div><div class="v">es-ES <span class="badge b-good">OK</span></div></div>
+    <div class="data-row"><div class="k">Hreflang</div><div class="v">es / en / x-default <span class="badge b-good">OK</span></div></div>
+    <div class="data-row"><div class="k">Plugin SEO</div><div class="v">Rank Math (visible en JSON-LD class="rank-math-schema") <span class="badge b-info">Info</span></div></div>
+    <div class="data-row"><div class="k">Generador</div><div class="v">WordPress + Elementor 3.35.7 + WPML 4.9.2 + WP Rocket 3.20.6.1</div></div>
+  </div>
+</details>
+
+<details>
+  <summary>Headings (jerarquía de la home)</summary>
+  <div class="body">
+    <div class="data-row"><div class="k">H1</div><div class="v">Especialista en oculoplastia en Málaga <span class="badge b-good">único</span></div></div>
+    <div class="data-row"><div class="k">H2 (8)</div><div class="v">Dr. Francisco Zamorano · Cirujano oculoplástico en Málaga · Experiencia y visión integral · Dedicación exclusiva a la cirugía oculoplástica · Rejuvenece tu mirada sin perder tu esencia · Blefaroplastia con láser CO2 · Cirujano oftalmólogo en Málaga · Especializaciones</div></div>
+    <div class="data-row"><div class="k">H3 (4)</div><div class="v">Blefaroplastia · Ptosis palpebral · Lagrimeo ocular · Oculoplastia</div></div>
+    <div class="data-row"><div class="k">/contacto/</div><div class="v"><span class="ko">Sin H1 detectado en HTML servido</span> <span class="badge b-bad">Crítico</span></div></div>
+  </div>
+</details>
+
+<details>
+  <summary>Schema / Datos estructurados</summary>
+  <div class="body">
+    <div class="data-row"><div class="k">Tipos en home</div><div class="v">Organization+Person · WebSite · AboutPage · ImageObject</div></div>
+    <div class="data-row"><div class="k">Tipos en /blefaroplastia/</div><div class="v">Article · WebPage · WebSite · Person · ImageObject · PostalAddress <span class="badge b-bad">Article incorrecto</span></div></div>
+    <div class="data-row"><div class="k">Schema sector salud</div><div class="v"><span class="ko">No usa Physician ni MedicalBusiness</span></div></div>
+    <div class="data-row"><div class="k">AggregateRating</div><div class="v"><span class="ko">No declarado</span> (en Doctoralia: 5,0 con 28 opiniones)</div></div>
+    <div class="data-row"><div class="k">BreadcrumbList</div><div class="v"><span class="ko">No declarado</span></div></div>
+    <div class="data-row"><div class="k">FAQPage</div><div class="v"><span class="ko">No declarado</span> — gran oportunidad para clínicas</div></div>
+  </div>
+</details>
+
+<details>
+  <summary>Open Graph y Twitter Cards</summary>
+  <div class="body">
+    <div class="data-row"><div class="k">og:locale</div><div class="v">es_ES</div></div>
+    <div class="data-row"><div class="k">og:type</div><div class="v">website</div></div>
+    <div class="data-row"><div class="k">og:title</div><div class="v">Dr. Francisco Zamorano | Cirujano Oculoplástico en Málaga</div></div>
+    <div class="data-row"><div class="k">og:description</div><div class="v">Oculoplastia en Málaga realizada por Dr. Francisco Zamorano…</div></div>
+    <div class="data-row"><div class="k">og:url</div><div class="v">https://doctorzamorano.com/</div></div>
+    <div class="data-row"><div class="k">og:image</div><div class="v">/wp-content/uploads/2025/08/francisco-zamorano.jpg <span class="badge b-warn">590×590 JPG</span></div></div>
+    <div class="data-row"><div class="k">og:image:alt</div><div class="v"><span class="ko">"HOME"</span> <span class="badge b-bad">débil</span></div></div>
+    <div class="data-row"><div class="k">twitter:card</div><div class="v">summary_large_image</div></div>
+  </div>
+</details>
+
+<details>
+  <summary>Configuración técnica del servidor</summary>
+  <div class="body">
+    <div class="data-row"><div class="k">Servidor</div><div class="v">LiteSpeed</div></div>
+    <div class="data-row"><div class="k">HTTP/3 (QUIC)</div><div class="v">Activo (alt-svc h3:443) <span class="badge b-good">OK</span></div></div>
+    <div class="data-row"><div class="k">HTTPS</div><div class="v">Activo, http→https con 301 <span class="badge b-good">OK</span></div></div>
+    <div class="data-row"><div class="k">www → no-www</div><div class="v">301 a https://doctorzamorano.com/ <span class="badge b-good">OK</span></div></div>
+    <div class="data-row"><div class="k">HSTS</div><div class="v"><span class="ko">No presente</span> <span class="badge b-warn">Recomendado en sanidad</span></div></div>
+    <div class="data-row"><div class="k">Compresión</div><div class="v">Vary: Accept-Encoding (gzip/br habilitado)</div></div>
+    <div class="data-row"><div class="k">TTFB home</div><div class="v">1,32 s <span class="badge b-warn">Mejorable</span></div></div>
+    <div class="data-row"><div class="k">TTFB /dr-francisco-zamorano/</div><div class="v">2,14 s <span class="badge b-bad">Lenta</span></div></div>
+    <div class="data-row"><div class="k">TTFB páginas servicio</div><div class="v">≈ 0,75 s <span class="badge b-good">OK</span></div></div>
+    <div class="data-row"><div class="k">HTML home</div><div class="v">133 KB</div></div>
+    <div class="data-row"><div class="k">robots.txt</div><div class="v">Solo bloquea /wp-admin/ (con excepción admin-ajax.php) y declara sitemap <span class="badge b-good">OK</span></div></div>
+    <div class="data-row"><div class="k">sitemap_index.xml</div><div class="v">Apunta a page-sitemap.xml con 19 URLs (es + en) <span class="badge b-warn">Sin posts</span></div></div>
+    <div class="data-row"><div class="k">favicon.ico</div><div class="v">/favicon.ico devuelve 404 pero hay link rel="icon" 32×32 / 192×192 + apple-touch-icon 180×180 <span class="badge b-good">OK</span></div></div>
+  </div>
+</details>
+
+<details id="paginas">
+  <summary>Páginas internas auditadas</summary>
+  <div class="body">
+    <div class="data-row"><div class="k">/dr-francisco-zamorano/</div><div class="v">200 · 2,14 s <span class="badge b-warn">lenta</span></div></div>
+    <div class="data-row"><div class="k">/blefaroplastia-malaga/</div><div class="v">200 · 0,74 s · Title 60 chars · H1 OK · Schema Article <span class="badge b-bad">tipo erróneo</span></div></div>
+    <div class="data-row"><div class="k">/contacto/</div><div class="v">200 · 0,75 s · sin H1 visible <span class="badge b-bad">crítico</span></div></div>
+    <div class="data-row"><div class="k">/oculoplastia-malaga/</div><div class="v">200 · 0,74 s</div></div>
+    <div class="data-row"><div class="k">/ptosis-palpebral-malaga/</div><div class="v">200 · 0,73 s</div></div>
+    <div class="data-row"><div class="k">/lagrimeo-ocular-malaga/</div><div class="v">200 · 0,77 s</div></div>
+    <div class="data-row"><div class="k">/en/</div><div class="v">200 · 0,75 s · versión inglesa con WPML <span class="badge b-good">OK</span></div></div>
+  </div>
+</details>
+
+<details>
+  <summary>Reputación cruzada (señales externas)</summary>
+  <div class="body">
+    <div class="data-row"><div class="k">Doctoralia</div><div class="v">5,0 ★ con 28 opiniones <span class="badge b-good">muy positivo</span></div></div>
+    <div class="data-row"><div class="k">Premio</div><div class="v">"Mejor residente de la provincia de Málaga 2022" — usar como E-E-A-T (firma autor + about page)</div></div>
+    <div class="data-row"><div class="k">Sociedades</div><div class="v">SECPOO, SEO, ESOPRS, SECPF — listar con enlaces externos en about page</div></div>
+    <div class="data-row"><div class="k">Idiomas</div><div class="v">Castellano e inglés (coincide con WPML)</div></div>
+  </div>
+</details>
+
+<footer>
+  Auditoría generada el 25 de abril de 2026 · Datos extraídos en directo de doctorzamorano.com<br>
+  Solo se reportan hallazgos verificables. La parte de Google Business se complementa con la información cruzada disponible públicamente.
+</footer>
+
+</div>
+</body>
+</html>
